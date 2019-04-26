@@ -30,6 +30,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     let the owner of the contract register the locations of different addresses
     */
     function register(address user, string memory location) public onlyOwner{
+        // not tested: require(!hasLocation[user]);
         locations[user] = location;
         hasLocation[user] = true;
     }
@@ -77,7 +78,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         require(location_holdings[receiver_loc].add(value) <= location_capacities[receiver_loc]); //make sure cap is not exceeded and revert if it is
         location_holdings[receiver_loc] = location_holdings[receiver_loc].add(value); //increase the location holding for receiver
         location_holdings[sender_loc] = location_holdings[ sender_loc ].sub(value); //decrease the sender location holdings
-        return super.transferFrom(from,to,value);
+        return _transferFrom(from,to,value);
     }
 
 
