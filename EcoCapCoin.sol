@@ -110,8 +110,12 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     function getUserPreviousCyclePollution(address pol) public view returns (uint256) {
         polluter memory person = polluters[pol];
 
+        //give previous if last pollution was on this cycle
         if(person.lastRegisteredCycle == cycle) return person.pollutedPreviousCycle;
-        else return person.pollutedThisCycle;
+        //give previous if last pollution was on last cycle
+        else if(person.lastRegisteredCycle == cycle.sub(1)) return person.pollutedThisCycle;
+        //give previous if last pollution was 2 or more cycles ago
+        else return 0;
     }
 
     function getUserLocation(address user) public view returns (string memory) {
