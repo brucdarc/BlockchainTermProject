@@ -17,6 +17,8 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         bool hasLocation;
         string location;
         uint256 pollutedThisCycle;
+        uint256 pollutedPreviousCycle;
+        uint256 lastRegisteredCycle;
     }
     struct location{
         uint256 capacity;
@@ -33,6 +35,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     mapping(address => polluter) polluters;
     mapping(string => location) locations;
     mapping(address => sensor) sensors;
+    uint256 cycle;
 
     /*
     mapping(address => string) locations;
@@ -53,8 +56,8 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         symbol = "ECC";                               // Set the symbol for display purposes
         uint256 totalSupply = uint256(1000000000*10**uint(decimals));                        // Update total supply
         _mint(msg.sender, totalSupply);          // Give the creator all initial tokens
-        
-        
+
+
         polluter storage regulator = polluters[msg.sender];
         regulator.location = "GOVERNANCE NON AREA";
         regulator.hasLocation = true;
@@ -62,7 +65,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         govArea.capacity = totalSupply;
         govArea.holding = totalSupply;
         govArea.original_cap = totalSupply;
-        
+
     }
 
     /*
@@ -79,6 +82,10 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         locations[loc].original_cap = capacity;
     }
 
+    function nextCycle() public onlyOwner{
+        cycle = cycle +1;
+    }
+
     function registerSensor(address pol, address sens) public onlyOwner{
         sensors[sens].registeredPolluter = pol;
         sensors[sens].isSensor = true;
@@ -86,8 +93,25 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
 
     function sensorAddPollution(uint256 pollution) public{
         require(sensors[msg.sender].isSensor);
-        address pol = sensors[msg.sender].registeredPolluter;
-        polluters[pol].pollutedThisCycle = polluters[pol].pollutedThisCycle.add(pollution);
+        address polAdd = sensors[msg.sender].registeredPolluter;
+        polluter storage pol = polluters[polAdd];
+
+        if(pol.lastRegisteredCycle != cycle){
+            pol.lastRegisteredCycle = cycle;
+            pol.pollutedPreviousCycle = pol.pollutedThisCycle;
+            pol.pollutedThisCycle = 0;
+        }
+
+        pol.pollutedThisCycle = pol.pollutedThisCycle.add(pollution);
+
+        //polluters[polAdd] = pol;
+    }
+
+    function getUserPreviousCyclePollution(address pol) public view returns (uint256) {
+        polluter memory person = polluters[pol];
+
+        if(person.lastRegisteredCycle == cycle) return person.pollutedPreviousCycle;
+        else return person.pollutedThisCycle;
     }
 
     function getUserLocation(address user) public view returns (string memory) {
@@ -103,9 +127,15 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         return locations[loc].holding;
     }
 
-    function checkPolluterLimit(address pol) public view returns (string memory){
-        if(balanceOf(pol) < polluters[pol].pollutedThisCycle) return "EXCEEDED POLLUTION LIMIT";
-        else return "Has not exceeded pollution limit";
+    //check if person has exceeded the token allowed pollution limit this cycle
+    function checkPolluterLimit(address pol) public view returns (uint256){
+        uint256 polluted;
+        polluter memory poLEETer = polluters[pol];
+
+        if(poLEETer.lastRegisteredCycle == cycle) polluted = poLEETer.pollutedThisCycle;
+        else polluted = 0;
+
+        return polluted;
     }
 
 
@@ -155,7 +185,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         location_holdings[sender_loc] = location_holdings[ sender_loc ].sub(value); //decrease the sender location holdings
         return super.transferFrom(from,to,value);
         */
-        
+
     }
 
     /*
