@@ -14,6 +14,11 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     mapping(string => uint256) location_capacities;
     mapping(string => uint256) location_holdings;
 
+    mapping(address => bool) isSensor;
+    mapping(address => address) sensors; // a sensor maps to who it is recordings pollution for
+    mapping(address => uint256) pollutedThisCycle; //how much has an address polluted this cycle
+
+
     constructor() public {
         name = "EcoCapCoin";                                   // Set the name for display purposes
         decimals = 18;                            // Amount of decimals for display purposes
@@ -30,13 +35,23 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     let the owner of the contract register the locations of different addresses
     */
     function register(address user, string memory location) public onlyOwner{
-        // not tested: require(!hasLocation[user]);
         locations[user] = location;
         hasLocation[user] = true;
     }
 
     function setLocationCapacity(string memory location, uint256 capacity) public onlyOwner{
         location_capacities[location] = capacity;
+    }
+
+    function registerSensor(address polluter, address sensor) public onlyOwner{
+        sensors[sensor] = polluter;
+        isSensor[sensor] = true;
+    }
+
+    function sensorAddPollution(uint256 pollution) public{
+        require(isSensor[msg.sender]);
+        address polluter = sensors[msg.sender];
+        pollutedThisCycle[polluter] = pollutedThisCycle[polluter].add(pollution);
     }
 
     function getUserLocation(address user) public view returns (string memory) {
@@ -78,13 +93,31 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         require(location_holdings[receiver_loc].add(value) <= location_capacities[receiver_loc]); //make sure cap is not exceeded and revert if it is
         location_holdings[receiver_loc] = location_holdings[receiver_loc].add(value); //increase the location holding for receiver
         location_holdings[sender_loc] = location_holdings[ sender_loc ].sub(value); //decrease the sender location holdings
-        return _transferFrom(from,to,value);
+        return super.transferFrom(from,to,value);
     }
 
+    /*
 
+    when burning tokens, it decreases the capacity of whatever location those tokens are in
+    it also obviously should decrease the location holdings and it does
 
+    */
+    function burn(uint256 value) public {
+        if(hasLocation[msg.sender]){
+            string memory sender_loc = locations[msg.sender];
+            location_holdings[sender_loc] = location_holdings[sender_loc].sub(value);
+            location_capacities[sender_loc] = location_capacities[sender_loc].sub(value);
+        }
+        _burn(msg.sender, value);
+    }
 
-
-
-
+    function burnFrom(address from, uint256 value) public {
+        if(hasLocation[from]){
+            string memory sender_loc = locations[from];
+            location_holdings[sender_loc] = location_holdings[sender_loc].sub(value);
+            location_capacities[sender_loc] = location_capacities[sender_loc].sub(value);
+        }
+        _burnFrom(from, value);
+    }
+    
 }
