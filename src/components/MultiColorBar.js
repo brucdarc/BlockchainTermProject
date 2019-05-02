@@ -1,36 +1,16 @@
 import React, { Component } from "react";
 
+
 class MultiColorProgressBar extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state ={
-            readings:[
-                {
-                    name: 'Apples',
-                    value: 60,
-                    color: '#eb4d4b'
-                },
-                {
-                    name: 'Blueberries',
-                    value: 7,
-                    color: '#22a6b3'
-                },
-                {
-                    name: 'Guavas',
-                    value: 23,
-                    color: '#6ab04c'
-                }
-            ]
-        }
-
 
     }
 
 
 
     render() {
-        const parent = this.state;
+        const parent = this.props;
 
         let values = parent.readings && parent.readings.length && parent.readings.map(function(item, i) {
             if(item.value > 0) {
