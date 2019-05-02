@@ -68,6 +68,10 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
 
     }
 
+    function validateCycleTokenTransaction(address from, address to, uint256 value) public{
+
+    }
+
     /*
     let the owner of the contract register the locations of different addresses
     */
@@ -122,6 +126,9 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         return polluters[user].location;
     }
 
+    function getLocationOriginalCapacity(string memory loc) public view returns (uint256) {
+        return locations[loc].original_cap;
+    }
 
     function getLocationCapacity(string memory loc) public view returns (uint256) {
         return locations[loc].capacity;
