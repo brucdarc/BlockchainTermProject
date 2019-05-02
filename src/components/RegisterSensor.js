@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import web3 from "./web3"
+import web3 from "../web3"
 
 class RegisterSensor extends Component{
 
@@ -7,6 +7,14 @@ class RegisterSensor extends Component{
         super(props);
         this.state={};
 
+    }
+
+    render() {
+        return(
+            <div>
+
+            </div>
+        )
     }
 };
 export default RegisterSensor;

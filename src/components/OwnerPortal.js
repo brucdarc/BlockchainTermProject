@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import web3 from "./web3"
-import RegisterPolluter from './components/RegisterPolluter';
-import RegisterSensor from './components/RegisterSensor';
+import web3 from "../web3"
+import RegisterPolluter from './RegisterPolluter';
+import RegisterSensor from './RegisterSensor';
 
 class OwnerPortal extends Component{
 
@@ -9,6 +9,14 @@ class OwnerPortal extends Component{
         super(props);
         this.state={};
 
+    }
+
+    render() {
+        return(
+            <div>
+
+            </div>
+        )
     }
 };
 export default OwnerPortal;

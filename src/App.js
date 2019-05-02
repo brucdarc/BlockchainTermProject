@@ -5,24 +5,29 @@ import EcoCapCoin from './EcoCapCoin';
 import Navigation from './components/Navigation';
 import OwnerPortal from './components/OwnerPortal';
 import PublicPortal from './components/PublicPortal';
+import Header from "./components/Header";
 
 
 
 class App extends Component {
 
+    constructor(props){
+        super(props)
+
+        this.state={
+          view:<PublicPortal/>
+        };
+    }
+
 
 
     render(){
         return (
-            <Container>
+            <div>
+                <Header/>
                 <Navigation/>
-
-
-                <OwnerPortal/>
-
-
-                <PublicPortal/>
-            </Container>
+                {this.state.view}
+            </div>
         );
 }
 };
