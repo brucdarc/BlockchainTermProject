@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import web3 from "../web3"
-import MultiColorBar from './MultiColorBar';
 import '../style.css';
 import Output from './Bars';
 
@@ -81,7 +80,7 @@ class PublicPortal extends Component{
                             {
                                 label: 'Available',
                                 value: 10,
-                                color: '#b202d3'
+                                color: '#0a6cb8'
                             }])}
                     </div>
                     <div className={'card'}>
@@ -101,7 +100,7 @@ class PublicPortal extends Component{
                             {
                                 label: 'Available',
                                 value: 53,
-                                color: '#b202d3'
+                                color: '#0a6cb8'
                             }])}
                     </div>
                 </div>

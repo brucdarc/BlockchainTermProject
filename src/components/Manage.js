@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import web3 from "../web3"
 
-
-class OwnerPortal extends Component{
+class Manage extends Component{
 
     constructor(props){
         super(props);
@@ -18,4 +17,4 @@ class OwnerPortal extends Component{
         )
     }
 };
-export default OwnerPortal;
+export default Manage;

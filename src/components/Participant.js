@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import web3 from "../web3"
 
-class RegisterSensor extends Component{
+class Participant extends Component{
 
     constructor(props){
         super(props);
@@ -17,4 +17,4 @@ class RegisterSensor extends Component{
         )
     }
 };
-export default RegisterSensor;
+export default Participant;
