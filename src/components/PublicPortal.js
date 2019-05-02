@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import web3 from "../web3"
 import MultiColorBar from './MultiColorBar';
 import '../style.css';
+import Output from './Bars';
 
 class PublicPortal extends Component{
 
@@ -9,15 +10,8 @@ class PublicPortal extends Component{
         super(props);
         this.state={};
 
-        this.makeBar=this.makeBar.bind(this);
     }
 
-
-    makeBar(params){
-        return(
-            <MultiColorBar params={params}/>
-        );
-    }
 
     render() {
         return(
@@ -26,98 +20,89 @@ class PublicPortal extends Component{
                     <div className={'card-body'}>
                     </div>
                 </div>
-                <div className={'card-columns'} style={{columnCount:'2'}}>
-                    <div className={'card border-0'}>
+                <div className={'card-columns rounded'} style={{columnCount:'2'}}>
+                    <div className={'card'}>
                         <div className={'card-header'}>
                             Region 1
                         </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 1
-                            </div>
-                        </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 2
-                                {this.makeBar({
-                                        label: 'As',
-                                        value: 50,
-                                        color: '#a2eb53'
-                                    },
-                                    {
-                                        label: 'Blues',
-                                        value: 13,
-                                        color: '#22a6b3'
-                                    },
-                                    {
-                                        label: 'Gu',
-                                        value: 28,
-                                        color: '#3d3cb0'
-                                    })}
-                            </div>
-                        </div>
+                        {Output([{
+                                label: 'Burned',
+                                value: 20,
+                                color: '#a70006'
+                            },
+                            {
+                                label: 'Held',
+                                value: 60,
+                                color: '#589b3a'
+                            },
+                            {
+                                label: 'Available',
+                                value: 20,
+                                color: '#0a6cb8'
+                            }])}
+
+                            Percent polution
                     </div>
 
-                    <div className={'card border-0'}>
+                    <div className={'card'}>
                         <div className={'card-header'}>
                             Region 2
                         </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 1
-                                {this.makeBar([{
-                                    label: 'CO2',
-                                    value: 40,
-                                    color: '#eb4d4b'
-                                },
-                                    {
-                                        label: 'Monoxide',
-                                        value: 37,
-                                        color: '#22a6b3'
-                                    },
-                                    {
-                                        label: 'Guavas',
-                                        value: 23,
-                                        color: '#6ab04c'
-                                    }])}
-                            </div>
-                        </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 2
-                            </div>
-                        </div>
-
+                        {Output([{
+                            label: 'Burned',
+                            value: 80,
+                            color: '#a70006'
+                            },
+                            {
+                                label: 'Held',
+                                value: 10,
+                                color: '#00b30c'
+                            },
+                            {
+                                label: 'Available',
+                                value: 5,
+                                color: '#0a6cb8'
+                            }])}
                     </div>
-                    <div className={'card border-0'}>
+                    <div className={'card'}>
                         <div className={'card-header'}>
                             Region 3
                         </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 1
-                            </div>
-                        </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 2
-                            </div>
-                        </div>
+                        {Output([{
+                            label: 'Burned',
+                            value: 45,
+                            color: '#a70006'
+                        },
+                            {
+                                label: 'Held',
+                                value: 45,
+                                color: '#00b30c'
+                            },
+                            {
+                                label: 'Available',
+                                value: 10,
+                                color: '#b202d3'
+                            }])}
                     </div>
-                    <div className={'card border-0'}>
+                    <div className={'card'}>
                         <div className={'card-header'}>
                             Region 4
                         </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 1
-                            </div>
-                        </div>
-                        <div className={'card rounded-0'}>
-                            <div className={'card-body'}>
-                                Account 2
-                            </div>
-                        </div>
+                        {Output([{
+                            label: 'Burned',
+                            value: 15,
+                            color: '#a70006'
+                            },
+                            {
+                                label: 'Held',
+                                value: 32,
+                                color: '#00b30c'
+                            },
+                            {
+                                label: 'Available',
+                                value: 53,
+                                color: '#b202d3'
+                            }])}
                     </div>
                 </div>
             </div>

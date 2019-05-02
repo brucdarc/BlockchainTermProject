@@ -28,9 +28,6 @@ class Navigation extends Component{
                                 <button id={'aboutNav'} className={'btn btn-info btn-lg'} style={{color:'black'}}>
                                     <span>About</span>
                                 </button>
-                                <div className={'card-footer text-white'}>
-                                    Find out more about Eco-Cap coin here!
-                                </div>
                             </div>
                         </div>
                         <div className={'row'}>
@@ -38,6 +35,13 @@ class Navigation extends Component{
                                 <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}}>
                                     <span>Manage</span>
                                 </button>
+                            </div>
+                            <div className={'float-right'}>
+                                <div className="card-body">
+                                    <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}}>
+                                        <span>Participants</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
