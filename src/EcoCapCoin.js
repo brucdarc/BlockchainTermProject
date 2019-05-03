@@ -1,8 +1,8 @@
 import web3 from "./web3";
 
-const address = "0x34a3edb61ccfdbde3923cb53e26ea1f3c94d9530";
+const address = "0xce0bde47cbd3db35a44d8c92456caa8b93d7fb73";
 
-const abi = [[
+const abi = [
     {
         "constant": true,
         "inputs": [],
@@ -462,6 +462,25 @@ const abi = [[
         "type": "function"
     },
     {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "loc",
+                "type": "string"
+            }
+        ],
+        "name": "getLocationOriginalCapacity",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "constant": false,
         "inputs": [
             {
@@ -542,6 +561,6 @@ const abi = [[
         "name": "Approval",
         "type": "event"
     }
-]];
+];
 
 export default new web3.eth.Contract(abi, address);
