@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import web3 from "../web3"
 import {Card, Form} from "semantic-ui-react";
 
-class SetLocationCapacity extends Component{
+class RegisterPolluter extends Component{
 
     constructor(props){
         super(props);
@@ -13,10 +13,10 @@ class SetLocationCapacity extends Component{
     render() {
         return(
             <div>
-                <h4>Set a Location's Permit Capacity</h4>
+                <h4>Register A Polluter</h4>
                 <Form.Field>
                     <input
-                        placeholder="Location"
+                        placeholder="Polluter Address"
                         onChange={event =>
                             this.setState({
                                 polluter: event.target.value
@@ -26,7 +26,7 @@ class SetLocationCapacity extends Component{
                 </Form.Field>
                 <Form.Field>
                     <input
-                        placeholder="Number of Permits"
+                        placeholder="Polluter Location"
                         onChange={event =>
                             this.setState({
                                 polluter: event.target.value
@@ -35,11 +35,11 @@ class SetLocationCapacity extends Component{
                     />
                 </Form.Field>
                 <br/>
-                <button id={'setLocation'} className={'btn btn-md btn-success'} style={{color:'white'}} >
-                    <span>Set Location</span>
+                <button id={'registerPolluter'} className={'btn btn-md btn-success'} style={{color:'white'}} >
+                    <span>Register Polluter</span>
                 </button>
             </div>
         )
     }
 };
-export default SetLocationCapacity;
+export default RegisterPolluter;
