@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import web3 from "../web3"
-import MultiColorBar from './MultiColorBar';
 import { Button, Header, Icon, Modal, Form, Message } from "semantic-ui-react";
 import '../style.css';
 import Output from './Bars';
