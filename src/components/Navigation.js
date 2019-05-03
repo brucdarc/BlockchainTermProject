@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Header, Icon, Modal, Form, Message } from "semantic-ui-react";
 import web3 from "../web3"
+import Manage from "./Manage";
 
 class Navigation extends Component{
 
@@ -58,7 +59,8 @@ class Navigation extends Component{
                     <small>{subslogan}</small>
                 </Modal.Header>
                 <Modal.Content>
-                    form
+                    <Manage>
+                    </Manage>
                 </Modal.Content>
             </Modal>
         );
