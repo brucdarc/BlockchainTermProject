@@ -1,14 +1,61 @@
 import React, { Component } from "react";
 import web3 from "../web3"
+import MultiColorBar from './MultiColorBar';
+import { Button, Header, Icon, Modal, Form, Message } from "semantic-ui-react";
 import '../style.css';
 import Output from './Bars';
+import EcoCapCoin from "../EcoCapCoin";
 
 class PublicPortal extends Component{
 
     constructor(props){
         super(props);
-        this.state={};
+        this.state={
+            notOwned:0,
+            burned:0,
+            owned:0,
+            customLocation:"",
+            custom_notOwned:0,
+            custom_burned:0,
+            custom_owned:0,
+        };
 
+    }
+
+    grabTotal = async () => {
+        this.setState({ modalOpen: true });
+        let govHold = await EcoCapCoin.methods.getLocationHoldings("Canada").call();
+        let govCap = await EcoCapCoin.methods.getLocationCapacity("Canada").call();
+        let govOrCap = await EcoCapCoin.methods.getLocationOriginalCapacity("Canada").call();
+
+
+        this.setState({
+            notOwned: (govCap - govHold)*100 / govOrCap,
+            owned: govHold*100 / govOrCap,
+            burned: (govOrCap - govCap) * 100 /govOrCap
+
+        });
+        console.log( "goc" + govOrCap + " gc " + govCap + " gh " + govHold);
+    }
+
+    grabLocation = async (location) => {
+        this.setState({ modalOpen: true });
+        let govHold = await EcoCapCoin.methods.getLocationHoldings(location).call();
+        let govCap = await EcoCapCoin.methods.getLocationCapacity(location).call();
+        let govOrCap = await EcoCapCoin.methods.getLocationOriginalCapacity(location).call();
+
+
+        this.setState({
+            custom_notOwned: (govCap - govHold)*100 / govOrCap,
+            custom_owned: govHold*100 / govOrCap,
+            custom_burned: (govOrCap - govCap) * 100 /govOrCap
+
+        });
+        console.log( "goc" + govOrCap + " gc " + govCap + " gh " + govHold);
+    }
+
+    updateCustomLoc(event) {
+        this.setState({customLocation: event.target.value})
     }
 
 
@@ -22,46 +69,54 @@ class PublicPortal extends Component{
                 <div className={'card-columns rounded'} style={{columnCount:'2'}}>
                     <div className={'card'}>
                         <div className={'card-header'}>
-                            Region 1
+                            Canada
                         </div>
                         {Output([{
                                 label: 'Burned',
-                                value: 20,
+                                value: this.state.burned,
                                 color: '#a70006'
                             },
                             {
                                 label: 'Held',
-                                value: 60,
+                                value: this.state.owned,
                                 color: '#589b3a'
                             },
                             {
                                 label: 'Available',
-                                value: 20,
+                                value: this.state.notOwned,
                                 color: '#0a6cb8'
                             }])}
 
-                            Percent polution
+
+
+                        <Button color="red" onClick={this.grabTotal} inverted>
+                            Get Location Data
+                        </Button>
                     </div>
 
                     <div className={'card'}>
                         <div className={'card-header'}>
-                            Region 2
+                            <input value={this.state.customLocation} onChange={this.updateCustomLoc.bind(this)}/>
                         </div>
                         {Output([{
                             label: 'Burned',
-                            value: 80,
+                            value: this.state.custom_burned,
                             color: '#a70006'
-                            },
+                        },
                             {
                                 label: 'Held',
-                                value: 10,
-                                color: '#00b30c'
+                                value: this.state.custom_owned,
+                                color: '#589b3a'
                             },
                             {
                                 label: 'Available',
-                                value: 5,
+                                value: this.state.custom_notOwned,
                                 color: '#0a6cb8'
                             }])}
+
+                        <Button color="red" onClick={() => this.grabLocation(this.state.customLocation)} inverted>
+                            Get Location Data
+                        </Button>
                     </div>
                     <div className={'card'}>
                         <div className={'card-header'}>
@@ -80,7 +135,7 @@ class PublicPortal extends Component{
                             {
                                 label: 'Available',
                                 value: 10,
-                                color: '#0a6cb8'
+                                color: '#b202d3'
                             }])}
                     </div>
                     <div className={'card'}>
@@ -100,7 +155,7 @@ class PublicPortal extends Component{
                             {
                                 label: 'Available',
                                 value: 53,
-                                color: '#0a6cb8'
+                                color: '#b202d3'
                             }])}
                     </div>
                 </div>
