@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Header, Icon, Modal, Form, Message } from "semantic-ui-react";
 import web3 from "../web3"
 import Manage from "./Manage";
+import Participant from "./Participant";
 
 class Navigation extends Component{
 
@@ -46,7 +47,7 @@ class Navigation extends Component{
         this.setState({showAbout:false});
     }
 
-    generateModal(stateOpen, functionClose, slogan, subslogan){
+    generateModal(stateOpen, functionClose, slogan, subslogan, view){
         return(
             <Modal open={stateOpen} onClose={functionClose} style={{left:'20%'}}>
                 <Modal.Header>
@@ -59,8 +60,7 @@ class Navigation extends Component{
                     <small>{subslogan}</small>
                 </Modal.Header>
                 <Modal.Content>
-                    <Manage>
-                    </Manage>
+                    {view}
                 </Modal.Content>
             </Modal>
         );
@@ -81,27 +81,19 @@ class Navigation extends Component{
                     </nav>
                     <div className="collapse" id="navbarToggleExternalContent">
                         <div className={'row'}>
-                            <div className="card-body">
-                                <button id={'aboutNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowAbout}>
-                                    <span>About</span>
-                                </button>
-                                {this.generateModal(this.state.showAbout,this.handleCloseAbout,"All About Eco-Cap Coin!","The future of the environment")}
-                            </div>
-                        </div>
-                        <div className={'row'}>
-                            <div className="card-body">
-                                <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowManage}>
-                                    <span>Manage</span>
-                                </button>
-                                {this.generateModal(this.state.showManage,this.handleCloseManage,"Management Portal","Take a look at the Inner Workings")}
-                            </div>
                             <div className={'float-right'}>
                                 <div className="card-body">
-                                    <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowPollute}>
-                                        <span>Participants</span>
+                                    <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowManage}>
+                                        <span>Manage</span>
                                     </button>
-                                    {this.generateModal(this.state.showPolluter,this.handleClosePollute,"Check Out Participant Details","")}
+                                    {this.generateModal(this.state.showManage,this.handleCloseManage,"Management Portal","Take a look at the Inner Workings", <Manage/>)}
                                 </div>
+                            </div>
+                            <div className="card-body">
+                                <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowPollute}>
+                                    <span>Participants</span>
+                                </button>
+                                {this.generateModal(this.state.showPolluter,this.handleClosePollute,"Check Out Participant Details","",<Participant/>)}
                             </div>
                         </div>
                     </div>
