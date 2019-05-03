@@ -10,10 +10,11 @@ class PublicPortal extends Component{
     constructor(props){
         super(props);
         this.state={
+            location:"Canada",
             notOwned:0,
             burned:0,
             owned:0,
-            customLocation:"",
+            customLocation:"Colorado",
             custom_notOwned:0,
             custom_burned:0,
             custom_owned:0,
@@ -23,9 +24,9 @@ class PublicPortal extends Component{
 
     grabTotal = async () => {
         this.setState({ modalOpen: true });
-        let govHold = await EcoCapCoin.methods.getLocationHoldings("Canada").call();
-        let govCap = await EcoCapCoin.methods.getLocationCapacity("Canada").call();
-        let govOrCap = await EcoCapCoin.methods.getLocationOriginalCapacity("Canada").call();
+        let govHold = await EcoCapCoin.methods.getLocationHoldings(this.state.location).call();
+        let govCap = await EcoCapCoin.methods.getLocationCapacity(this.state.location).call();
+        let govOrCap = await EcoCapCoin.methods.getLocationOriginalCapacity(this.state.location).call();
 
 
         this.setState({
@@ -56,6 +57,9 @@ class PublicPortal extends Component{
     updateCustomLoc(event) {
         this.setState({customLocation: event.target.value})
     }
+    updateLoc(event) {
+        this.setState({customLocation: event.target.value})
+    }
 
 
     render() {
@@ -65,10 +69,13 @@ class PublicPortal extends Component{
                     <div className={'card-body'}>
                     </div>
                 </div>
-                <div className={'card-columns rounded'} style={{columnCount:'2'}}>
+                <div className={'card-columns rounded'} style={{columnCount:'1'}}>
+                    <h1>Pollution Permit Data By Location</h1>
                     <div className={'card'}>
                         <div className={'card-header'}>
-                            Canada
+                            <Form.Field>
+                                <input value={this.state.location} onChange={this.updateLoc.bind(this)}/>
+                            </Form.Field>
                         </div>
                         {Output([{
                                 label: 'Burned',
@@ -88,14 +95,16 @@ class PublicPortal extends Component{
 
 
 
-                        <Button color="red" onClick={this.grabTotal} inverted>
+                        <Button color="green" onClick={this.grabTotal} inverted>
                             Get Location Data
                         </Button>
                     </div>
 
                     <div className={'card'}>
                         <div className={'card-header'}>
-                            <input value={this.state.customLocation} onChange={this.updateCustomLoc.bind(this)}/>
+                            <Form.Field>
+                                <input value={this.state.customLocation} onChange={this.updateCustomLoc.bind(this)}/>
+                            </Form.Field>
                         </div>
                         {Output([{
                             label: 'Burned',
@@ -113,49 +122,9 @@ class PublicPortal extends Component{
                                 color: '#0a6cb8'
                             }])}
 
-                        <Button color="red" onClick={() => this.grabLocation(this.state.customLocation)} inverted>
+                        <Button color="green" onClick={() => this.grabLocation(this.state.customLocation)} inverted>
                             Get Location Data
                         </Button>
-                    </div>
-                    <div className={'card'}>
-                        <div className={'card-header'}>
-                            Region 3
-                        </div>
-                        {Output([{
-                            label: 'Burned',
-                            value: 45,
-                            color: '#a70006'
-                        },
-                            {
-                                label: 'Held',
-                                value: 45,
-                                color: '#00b30c'
-                            },
-                            {
-                                label: 'Available',
-                                value: 10,
-                                color: '#b202d3'
-                            }])}
-                    </div>
-                    <div className={'card'}>
-                        <div className={'card-header'}>
-                            Region 4
-                        </div>
-                        {Output([{
-                            label: 'Burned',
-                            value: 15,
-                            color: '#a70006'
-                            },
-                            {
-                                label: 'Held',
-                                value: 32,
-                                color: '#00b30c'
-                            },
-                            {
-                                label: 'Available',
-                                value: 53,
-                                color: '#b202d3'
-                            }])}
                     </div>
                 </div>
             </div>
