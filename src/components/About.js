@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import web3 from "../web3"
 
-class RegisterPolluter extends Component{
+class About extends Component{
 
     constructor(props){
         super(props);
@@ -17,4 +17,4 @@ class RegisterPolluter extends Component{
         )
     }
 };
-export default RegisterPolluter;
+export default About;
