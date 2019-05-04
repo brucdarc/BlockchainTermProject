@@ -9,12 +9,12 @@ class Participant extends Component{
         super(props);
         this.state={
             holderAddress:"",
-            holderLocation:"loc",
-            thisCycle: 0,
-            lastCycle: 0,
-            holdings: 0,
-            registeredCycle: 0,
-            sensors:[],
+            holderLocation:"",
+            thisCycle: 5600,
+            lastCycle: 1200,
+            holdings: 65000,
+            registeredCycle: 1,
+            sensors:["0xc14f6c868bb09d71409dd37bd775b3d95839fa93","0xb2f1229e80e2392013e25c7452bab7171dcbe4c3","0x21b7ba728a806f3405fc850b053e80ec033476e3"],
             show:false
         };
 
@@ -27,8 +27,10 @@ class Participant extends Component{
 
         let location = await EcoCapCoin.methods.getUserLocation(address).call();
         let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(address).call();
+        let tCycle = await EcoCapCoin.methods.checkPolluterLimit(address).call();
 
-        this.setState({holderAddress:address,holderLocation:location,lastCycle:lCycle,show:true});
+
+        this.setState({holderAddress:address,holderLocation:location,show:true});
 
     }
 
@@ -45,10 +47,7 @@ class Participant extends Component{
             return(
             <tr key={i}>
                 <td>
-                    {sensor.address}
-                </td>
-                <td>
-                    {sensor.type}
+                    {sensor}
                 </td>
             </tr>
             );
@@ -84,9 +83,6 @@ class Participant extends Component{
                                         <th>
                                             Address
                                         </th>
-                                        <th>
-                                            Type
-                                        </th>
                                     </tr>
                                     {this.generateRows()}
                                 </tbody>
@@ -108,7 +104,7 @@ class Participant extends Component{
                     <Card.Content>
                         <Form.Field>
                             <input id="holderInput" placeholder="Enter Address"/>
-                            <button onClick={()=>{this.setHolderInformation(document.getElementById("holderInput").value)}}/>
+                            <button className={'btn'} onClick={()=>{this.setHolderInformation(document.getElementById("holderInput").value)}}/>
                         </Form.Field>
                     </Card.Content>
                 </Card>
