@@ -91,7 +91,7 @@ class Navigation extends Component{
                             </div>
                             <div className="card-body">
                                 <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowPollute}>
-                                    <span>Participants</span>
+                                    <span>Token Holders</span>
                                 </button>
                                 {this.generateModal(this.state.showPolluter,this.handleClosePollute,"Check Out Participant Details","",<Participant/>)}
                             </div>
