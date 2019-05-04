@@ -1,13 +1,36 @@
 import React, { Component } from "react";
 import web3 from "../web3"
 import {Card, Form} from "semantic-ui-react";
+import EcoCapCoin from "../EcoCapCoin";
 
 class SetLocationCapacity extends Component{
 
     constructor(props){
         super(props);
-        this.state={};
+        this.state={
+            location : "",
+            capacity: 0
+        };
 
+    }
+
+    setLocCap = async event =>{
+        console.log("EYYYYYY");
+        event.preventDefault();
+        try {
+            const accounts = await web3.eth.getAccounts();
+            await EcoCapCoin.methods
+                .setLocationCapacity(this.state.location, this.state.capacity) // contains the user account name
+                .send({
+                    from: accounts[0]
+                });
+            this.setState({
+            });
+        } catch (err) {
+            console.log("ERROR IN SENDING TO CHAIN " + err);
+            this.setState({
+            });
+        }
     }
 
     render() {
@@ -19,7 +42,7 @@ class SetLocationCapacity extends Component{
                         placeholder="Location"
                         onChange={event =>
                             this.setState({
-                                polluter: event.target.value
+                                location: event.target.value
                             })
                         }
                     />
@@ -29,13 +52,13 @@ class SetLocationCapacity extends Component{
                         placeholder="Number of Permits"
                         onChange={event =>
                             this.setState({
-                                polluter: event.target.value
+                                capacity: event.target.value
                             })
                         }
                     />
                 </Form.Field>
                 <br/>
-                <button id={'setLocation'} className={'btn btn-md btn-success'} style={{color:'white'}} >
+                <button id={'setLocation'} className={'btn btn-md btn-success'} style={{color:'white'}} onClick={this.setLocCap}>
                     <span>Set Location</span>
                 </button>
             </div>

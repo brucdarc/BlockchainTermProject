@@ -14,8 +14,7 @@ class Manage extends Component{
     constructor(props){
         super(props);
         this.state={
-            showRegister: false,
-            polluter: ""
+            showRegister: false
         };
         this.handleCloseRegister=this.handleCloseRegister.bind(this);
         this.handleOpenRegister=this.handleOpenRegister.bind(this);
@@ -33,6 +32,8 @@ class Manage extends Component{
     progressCycle(){
 
     }
+
+
 
 
     render() {
