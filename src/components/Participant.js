@@ -30,12 +30,13 @@ class Participant extends Component{
         let location = await EcoCapCoin.methods.getUserLocation(this.state.holderAddress).call();
         let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(this.state.holderAddress).call();
 
+
         this.setState({show:true,holderLocation:location,lastCycle:lCycle});
 
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.generateHolderInformation(), 1000);
+        this.interval = setInterval(() => this.generateHolderInformation(), 5000);
     }
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -98,12 +99,6 @@ class Participant extends Component{
                                     {this.generateRows()}
                                 </tbody>
                             </Table>
-                        </Card.Content>
-                    </Card>
-                    <Card className={'fluid'} color="green" >
-                        <Card.Header><b> Sensor Statistics</b></Card.Header>
-                        <Card.Content>
-                            this is content
                         </Card.Content>
                     </Card>
                 </div>
