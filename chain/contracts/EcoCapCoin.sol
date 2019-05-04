@@ -35,6 +35,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     mapping(address => polluter) polluters;
     mapping(string => location) locations;
     mapping(address => sensor) sensors;
+    address[] holders;
     uint256 cycle;
 
     /*
@@ -79,6 +80,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         polluters[user].location = loc;
         polluters[user].hasLocation = true;
         polluters[user].pollutedThisCycle = 0;
+        holders.push(user);
     }
 
     function setLocationCapacity(string memory loc, uint256 capacity) public onlyOwner{
@@ -109,6 +111,14 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         pol.pollutedThisCycle = pol.pollutedThisCycle.add(pollution);
 
         //polluters[polAdd] = pol;
+    }
+
+    function getHolderAddress(uint index) public view returns(address){
+        return holders[index];
+    }
+
+    function getHolderCount() public view returns(uint){
+        return holders.length;
     }
 
     function getUserPreviousCyclePollution(address pol) public view returns (uint256) {

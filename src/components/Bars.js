@@ -58,7 +58,7 @@ const Output = (props) => {
                 {legends == ''?'':legends}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Output;

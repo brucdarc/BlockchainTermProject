@@ -1,6 +1,6 @@
 import web3 from "./web3";
 
-const address = "0xce0bde47cbd3db35a44d8c92456caa8b93d7fb73";
+const address = "0x22c44ccf1c854e479daff3c7c0b24887ab607da6";
 
 const abi = [
     {
@@ -36,6 +36,28 @@ const abi = [
                 "type": "bool"
             }
         ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "validateCycleTokenTransaction",
+        "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
@@ -268,6 +290,20 @@ const abi = [
         "type": "function"
     },
     {
+        "constant": true,
+        "inputs": [],
+        "name": "getHolderCount",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "constant": false,
         "inputs": [],
         "name": "renounceOwnership",
@@ -292,6 +328,25 @@ const abi = [
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "getHolderAddress",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
         "type": "function"
     },
     {

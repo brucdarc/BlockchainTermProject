@@ -7,6 +7,7 @@
     "ganache-cli": "^6.3.0",
     "mocha": "^5.2.0",
     "react": "^16.8.1",
+    "react-addons-update": "^15.6.2",
     "react-dom": "^16.8.1",
     "react-scripts": "2.1.5",
     "semantic-ui-css": "^2.4.1",
