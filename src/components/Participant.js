@@ -9,29 +9,26 @@ class Participant extends Component{
         super(props);
         this.state={
             holderAddress:"",
-            holderLocation:"",
+            holderLocation:"loc",
             thisCycle: 0,
             lastCycle: 0,
             holdings: 0,
             registeredCycle: 0,
-            sensors:[{address:"addr1",type:"1"},{address:"addr2",type:"2"}],
+            sensors:[],
             show:false
         };
 
         this.setHolderInformation=this.setHolderInformation.bind(this);
         this.generateHolderInformation=this.generateHolderInformation.bind(this);
-        this.updateHolderAddress=this.updateHolderAddress.bind(this);
         this.generateRows=this.generateRows.bind(this);
     }
 
-    async setHolderInformation(){
-        this.setState({show:true});
+    async setHolderInformation(address){
 
-        let location = await EcoCapCoin.methods.getUserLocation(this.state.holderAddress).call();
-        let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(this.state.holderAddress).call();
+        let location = await EcoCapCoin.methods.getUserLocation(address).call();
+        let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(address).call();
 
-
-        this.setState({show:true,holderLocation:location,lastCycle:lCycle});
+        this.setState({holderAddress:address,holderLocation:location,lastCycle:lCycle,show:true});
 
     }
 
@@ -40,11 +37,6 @@ class Participant extends Component{
     }
     componentWillUnmount() {
         clearInterval(this.interval);
-    }
-
-    updateHolderAddress(address){
-            this.setState({holderAddress: address});
-            this.setHolderInformation();
     }
 
 
@@ -116,7 +108,7 @@ class Participant extends Component{
                     <Card.Content>
                         <Form.Field>
                             <input id="holderInput" placeholder="Enter Address"/>
-                            <button onClick={()=>{this.updateHolderAddress(document.getElementById("holderInput").value)}}/>
+                            <button onClick={()=>{this.setHolderInformation(document.getElementById("holderInput").value)}}/>
                         </Form.Field>
                     </Card.Content>
                 </Card>
