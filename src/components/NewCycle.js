@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import web3 from "../web3"
 import {Card, Form} from "semantic-ui-react";
+import EcoCapCoin from "../EcoCapCoin";
 
 class NewCycle extends Component{
 
@@ -8,6 +9,25 @@ class NewCycle extends Component{
         super(props);
         this.state={};
 
+    }
+
+    progressCycle = async event =>{
+        console.log("EYYYYYY");
+        event.preventDefault();
+        try {
+            const accounts = await web3.eth.getAccounts();
+            await EcoCapCoin.methods
+                .nextCycle() // contains the user account name
+                .send({
+                    from: accounts[0]
+                });
+            this.setState({
+            });
+        } catch (err) {
+            console.log("ERROR IN SENDING TO CHAIN " + err);
+            this.setState({
+            });
+        }
     }
 
     render() {
