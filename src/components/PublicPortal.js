@@ -36,6 +36,7 @@ class PublicPortal extends Component{
     }
 
     async updateRegions(){
+        let tmp =[];
         let regionCount = await EcoCapCoin.methods.getHolderCount().call();
         for(let i = 0; i < regionCount;i++) {
             let user = await EcoCapCoin.methods.getHolderAddress(i).call();
@@ -47,16 +48,9 @@ class PublicPortal extends Component{
             let owned = govHold * 100 / govOrCap;
             let burned = (govOrCap - govCap) * 100 / govOrCap;
 
-            let index = this.regionsIndex(location);
-            console.log(index, this.state.location);
-            if(index < 0){
-                this.state.regions.push({location:location,burned:burned,owned:owned,available:notOwned});
-                this.setState(this.state);
-            }
-            else{
-                this.setState({regions: update(this.state.regions,{i:{location:location,burned:burned,owned:owned,available:notOwned}})})
-            }
+            tmp.push({location:location,burned:burned,owned:owned,available:notOwned});
         }
+        this.setState({regions:tmp});
     }
 
     genRegionCards(){
@@ -64,10 +58,8 @@ class PublicPortal extends Component{
         return this.state.regions.map(function(region,i){
                 return (
                     <div className={'card fluid'} key={i}>
-                        <div className={'card border-0'}>
-                            <div className={'card-body'}>
-                                {Region(region)}
-                            </div>
+                        <div className={'card-body'}>
+                            {Region(region)}
                         </div>
                     </div>
                 );
