@@ -10,9 +10,9 @@ const Region = (props) => {
                 {props.location}
             </div>
             {Output([{
-                label: 'Burned',
+                label: 'Destroyed',
                 value: props.burned,
-                color: '#a70006'
+                color: '#313335'
             },
                 {
                     label: 'Held',
