@@ -19,6 +19,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         uint256 pollutedThisCycle;
         uint256 pollutedPreviousCycle;
         uint256 lastRegisteredCycle;
+        address[] polSensors;
     }
     struct location{
         uint256 capacity;
@@ -77,13 +78,15 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     let the owner of the contract register the locations of different addresses
     */
     function register(address user, string memory loc) public onlyOwner{
+        require(!polluters[user].hasLocation, "Polluter Already Registered");
         polluters[user].location = loc;
         polluters[user].hasLocation = true;
         polluters[user].pollutedThisCycle = 0;
         holders.push(user);
     }
 
-    function setLocationCapacity(string memory loc, uint256 capacity) public onlyOwner{
+    function registerLocation(string memory loc, uint256 capacity) public onlyOwner{
+        require(locations[loc].original_cap == 0, "Location Already Registered");
         locations[loc].capacity = capacity;
         locations[loc].original_cap = capacity;
     }
@@ -95,10 +98,11 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     function registerSensor(address pol, address sens) public onlyOwner{
         sensors[sens].registeredPolluter = pol;
         sensors[sens].isSensor = true;
+        polluters[pol].polSensors.push(sens);
     }
 
     function sensorAddPollution(uint256 pollution) public{
-        require(sensors[msg.sender].isSensor);
+        require(sensors[msg.sender].isSensor, "You are not a sensor");
         address polAdd = sensors[msg.sender].registeredPolluter;
         polluter storage pol = polluters[polAdd];
 
@@ -121,6 +125,16 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         return holders.length;
     }
 
+
+    function getSensorAddress(address Tpolluter, uint index) public view returns(address){
+        return polluters[Tpolluter].polSensors[index];
+    }
+
+    function getSensorCount(address Tpolluter) public view returns(uint){
+        return polluters[Tpolluter].polSensors.length;
+    }
+
+
     function getUserPreviousCyclePollution(address pol) public view returns (uint256) {
         polluter memory person = polluters[pol];
 
@@ -134,6 +148,10 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
 
     function getUserLocation(address user) public view returns (string memory) {
         return polluters[user].location;
+    }
+
+    function getLastPollutionCycle(address user) public view returns (uint256) {
+        return polluters[user].lastRegisteredCycle;
     }
 
     function getLocationOriginalCapacity(string memory loc) public view returns (uint256) {
@@ -169,13 +187,13 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     function transfer(address to, uint256 value) public returns(bool){
         polluter storage receiver = polluters[to];
         polluter storage sender = polluters[msg.sender];
-        require(receiver.hasLocation); //make sure receiver has location
-        require(sender.hasLocation); //make sure sender has location
+        require(receiver.hasLocation, "Address not registered"); //make sure receiver has location
+        require(sender.hasLocation, "You are not registered"); //make sure sender has location
         location storage receiver_loc = locations[receiver.location];
         location storage sender_loc = locations[sender.location];
 
 
-        require(receiver_loc.holding.add(value) <= receiver_loc.capacity); //make sure cap is not exceeded and revert if it is
+        require(receiver_loc.holding.add(value) <= receiver_loc.capacity, "Transaction would exceed location capacity"); //make sure cap is not exceeded and revert if it is
         receiver_loc.holding = receiver_loc.holding.add(value); //increase the location holding for receiver
         sender_loc.holding = sender_loc.holding.sub(value); //decrease the sender location holdings
         _transfer(msg.sender, to, value); //transfer the tokens
@@ -185,27 +203,16 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     function transferFrom(address from, address to, uint256 value) public returns (bool) {
         polluter storage receiver = polluters[to];
         polluter storage sender = polluters[msg.sender];
-        require(receiver.hasLocation); //make sure receiver has location
-        require(sender.hasLocation); //make sure sender has location
+        require(receiver.hasLocation, "Address not registered"); //make sure receiver has location
+        require(sender.hasLocation, "You are not registered"); //make sure sender has location
         location storage receiver_loc = locations[receiver.location];
         location storage sender_loc = locations[sender.location];
 
 
-        require(receiver_loc.holding.add(value) <= receiver_loc.capacity); //make sure cap is not exceeded and revert if it is
+        require(receiver_loc.holding.add(value) <= receiver_loc.capacity, "Transaction would exceed location capacity"); //make sure cap is not exceeded and revert if it is
         receiver_loc.holding = receiver_loc.holding.add(value); //increase the location holding for receiver
         sender_loc.holding = sender_loc.holding.sub(value); //decrease the sender location holdings
         return super.transferFrom(from, to, value); //transfer the tokens
-
-        /*
-        require(hasLocation[to]); //make sure receiver has location
-        require(hasLocation[from]); //make sure sender has location
-        string memory receiver_loc = locations[to];
-        string memory sender_loc = locations[from];
-        require(location_holdings[receiver_loc].add(value) <= location_capacities[receiver_loc]); //make sure cap is not exceeded and revert if it is
-        location_holdings[receiver_loc] = location_holdings[receiver_loc].add(value); //increase the location holding for receiver
-        location_holdings[sender_loc] = location_holdings[ sender_loc ].sub(value); //decrease the sender location holdings
-        return super.transferFrom(from,to,value);
-        */
 
     }
 
