@@ -40,24 +40,24 @@ class Manage extends Component{
         return(
             <div>
                 <Card.Group>
-                    <Card color="blue" header="">
+                    <Card color="blue">
                         <Card.Content>
                             <RegisterPolluter></RegisterPolluter>
                         </Card.Content>
                     </Card>
 
-                    <Card color="blue" header="">
+                    <Card color="blue">
                         <Card.Content>
                             <SetLocationCapacity></SetLocationCapacity>
                         </Card.Content>
                     </Card>
 
-                    <Card color="blue" header="">
+                    <Card color="blue">
                         <Card.Content>
                             <RegisterSensor></RegisterSensor>
                         </Card.Content>
                     </Card>
-                    <Card color="blue" header="">
+                    <Card color="blue">
                         <Card.Content>
                             <NewCycle></NewCycle>
                         </Card.Content>
