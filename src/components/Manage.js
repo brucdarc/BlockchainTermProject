@@ -5,7 +5,7 @@ import '../style.css';
 import Output from './Bars';
 import EcoCapCoin from "../EcoCapCoin";
 import RegisterPolluter from "./RegisterPolluter";
-import SetLocationCapacity from "./SetLocationCapacity";
+import RegisterLocation from "./RegisterLocation";
 import RegisterSensor from "./RegisterSensor";
 import NewCycle from "./NewCycle";
 
@@ -47,10 +47,12 @@ class Manage extends Component{
                     </Card>
 
                     <Card color="blue">
+
                         <Card.Content>
-                            <SetLocationCapacity></SetLocationCapacity>
+                            <RegisterLocation></RegisterLocation>
                         </Card.Content>
                     </Card>
+
 
                     <Card color="blue">
                         <Card.Content>
