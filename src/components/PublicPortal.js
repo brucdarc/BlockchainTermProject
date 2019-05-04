@@ -26,9 +26,9 @@ class PublicPortal extends Component{
         clearInterval(this.interval);
     }
 
-    regionsIndex(loc){
-        for(let i = 0; i < this.state.regions.length; i++){
-            if(this.state.regions[i].location == loc){
+    regionsIndex(loc,list){
+        for(let i = 0; i < list.length; i++){
+            if(list[i].location == loc){
                 return i;
             }
         }
@@ -41,14 +41,15 @@ class PublicPortal extends Component{
         for(let i = 0; i < regionCount;i++) {
             let user = await EcoCapCoin.methods.getHolderAddress(i).call();
             let location = await EcoCapCoin.methods.getUserLocation(user).call();
-            let govHold = await EcoCapCoin.methods.getLocationHoldings(location).call();
-            let govCap = await EcoCapCoin.methods.getLocationCapacity(location).call();
-            let govOrCap = await EcoCapCoin.methods.getLocationOriginalCapacity(location).call();
-            let notOwned = (govCap - govHold) * 100 / govOrCap;
-            let owned = govHold * 100 / govOrCap;
-            let burned = (govOrCap - govCap) * 100 / govOrCap;
-
-            tmp.push({location:location,burned:burned,owned:owned,available:notOwned});
+            if(this.regionsIndex(location,tmp)<0){
+                let govHold = await EcoCapCoin.methods.getLocationHoldings(location).call();
+                let govCap = await EcoCapCoin.methods.getLocationCapacity(location).call();
+                let govOrCap = await EcoCapCoin.methods.getLocationOriginalCapacity(location).call();
+                let notOwned = (govCap - govHold) * 100 / govOrCap;
+                let owned = govHold * 100 / govOrCap;
+                let burned = (govOrCap - govCap) * 100 / govOrCap;
+                tmp.push({location:location,burned:burned.toFixed(4),owned:owned.toFixed(4),available:notOwned.toFixed(4)});
+            }
         }
         this.setState({regions:tmp});
     }
