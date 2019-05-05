@@ -3,7 +3,7 @@ import web3 from "../web3"
 import {Card, Form} from "semantic-ui-react";
 import EcoCapCoin from "../EcoCapCoin";
 
-class SetLocationCapacity extends Component{
+class RegisterLocation extends Component{
 
     constructor(props){
         super(props);
@@ -20,7 +20,7 @@ class SetLocationCapacity extends Component{
         try {
             const accounts = await web3.eth.getAccounts();
             await EcoCapCoin.methods
-                .setLocationCapacity(this.state.location, this.state.capacity) // contains the user account name
+                .registerLocation(this.state.location, this.state.capacity) // contains the user account name
                 .send({
                     from: accounts[0]
                 });
@@ -36,7 +36,7 @@ class SetLocationCapacity extends Component{
     render() {
         return(
             <div>
-                <h4>Set a Location's Permit Capacity</h4>
+                <h4>Register Location's Permit Capacity</h4>
                 <Form.Field>
                     <input
                         placeholder="Location"
@@ -65,4 +65,4 @@ class SetLocationCapacity extends Component{
         )
     }
 };
-export default SetLocationCapacity;
+export default RegisterLocation;

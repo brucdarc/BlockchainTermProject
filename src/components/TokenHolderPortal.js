@@ -4,12 +4,12 @@ import { Button, Header, Icon, Modal, Form, Message, Card, CardGroup} from "sema
 import '../style.css';
 import Output from './Bars';
 import EcoCapCoin from "../EcoCapCoin";
-import RegisterPolluter from "./RegisterPolluter";
+import Burn from "./Burn";
 import RegisterLocation from "./RegisterLocation";
-import RegisterSensor from "./RegisterSensor";
+import Transfer from "./Transfer";
 import NewCycle from "./NewCycle";
 
-class Manage extends Component{
+class TokenHolderPortal extends Component{
 
     constructor(props){
         super(props);
@@ -42,33 +42,19 @@ class Manage extends Component{
                 <Card.Group>
                     <Card color="blue">
                         <Card.Content>
-                            <RegisterPolluter></RegisterPolluter>
+                            <Transfer></Transfer>
                         </Card.Content>
                     </Card>
 
                     <Card color="blue">
 
                         <Card.Content>
-                            <RegisterLocation></RegisterLocation>
+                            <Burn></Burn>
                         </Card.Content>
                     </Card>
-
-
-                    <Card color="blue">
-                        <Card.Content>
-                            <RegisterSensor></RegisterSensor>
-                        </Card.Content>
-                    </Card>
-                    <Card color="blue">
-                        <Card.Content>
-                            <NewCycle></NewCycle>
-                        </Card.Content>
-                    </Card>
-
-
                 </Card.Group>
             </div>
         )
     }
 };
-export default Manage;
+export default TokenHolderPortal;

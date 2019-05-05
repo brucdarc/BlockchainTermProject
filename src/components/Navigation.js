@@ -3,6 +3,7 @@ import { Button, Header, Icon, Modal, Form, Message } from "semantic-ui-react";
 import web3 from "../web3"
 import Manage from "./Manage";
 import Participant from "./Participant";
+import TokenHolderPortal from "./TokenHolderPortal";
 
 class Navigation extends Component{
 
@@ -11,7 +12,8 @@ class Navigation extends Component{
         this.state={
             showAbout: false,
             showManage: false,
-            showPolluter: false
+            showPolluter: false,
+            showTH: false
         };
 
         this.handleCloseAbout=this.handleCloseAbout.bind(this);
@@ -21,6 +23,8 @@ class Navigation extends Component{
         this.handleClosePollute=this.handleClosePollute.bind(this);
         this.handleShowPollute=this.handleShowPollute.bind(this);
         this.generateModal=this.generateModal.bind(this);
+        this.handleCloseTokenHolder=this.handleCloseTokenHolder.bind(this);
+        this.handleShowTokenHolder=this.handleShowTokenHolder.bind(this);
     }
 
     handleCloseManage(){
@@ -29,6 +33,14 @@ class Navigation extends Component{
 
     handleShowManage(){
         this.setState({showManage:true});
+    }
+
+    handleCloseTokenHolder(){
+        this.setState({showTH:false});
+    }
+
+    handleShowTokenHolder(){
+        this.setState({showTH:true});
     }
 
     handleClosePollute(){
@@ -89,9 +101,17 @@ class Navigation extends Component{
                                     {this.generateModal(this.state.showManage,this.handleCloseManage,"Management Portal","Take a look at the Inner Workings", <Manage/>)}
                                 </div>
                             </div>
+                            <div className={'float-right'}>
+                                <div className="card-body">
+                                    <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowTokenHolder}>
+                                        <span>Token Holder Portal</span>
+                                    </button>
+                                    {this.generateModal(this.state.showTH,this.handleCloseTokenHolder,"Token Holder Portal","", <TokenHolderPortal/>)}
+                                </div>
+                            </div>
                             <div className="card-body">
                                 <button id={'ownerNav'} className={'btn btn-info btn-lg'} style={{color:'black'}} onClick={this.handleShowPollute}>
-                                    <span>Token Holders</span>
+                                    <span>Holder Stats</span>
                                 </button>
                                 {this.generateModal(this.state.showPolluter,this.handleClosePollute,"Check Out Participant Details","",<Participant/>)}
                             </div>
