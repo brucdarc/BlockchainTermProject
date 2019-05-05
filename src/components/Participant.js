@@ -10,11 +10,10 @@ class Participant extends Component{
         this.state={
             holderAddress:"",
             holderLocation:"",
-            thisCycle: 5600,
-            lastCycle: 1200,
-            holdings: 65000,
-            registeredCycle: 1,
-            sensors:["0xc14f6c868bb09d71409dd37bd775b3d95839fa93","0xb2f1229e80e2392013e25c7452bab7171dcbe4c3","0x21b7ba728a806f3405fc850b053e80ec033476e3"],
+            thisCycle: 0,
+            lastCycle: 0,
+            holdings: 0,
+            sensors:[],
             show:false
         };
 
@@ -29,8 +28,14 @@ class Participant extends Component{
         let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(address).call();
         let tCycle = await EcoCapCoin.methods.checkPolluterLimit(address).call();
 
+        let tmp =[];
+        let sensorCount = await EcoCapCoin.methods.getSensorCount(address).call();
+        for(let i = 0; i < sensorCount;i++) {
+            let sensor = await EcoCapCoin.methods.getSensorAddress(address,i).call();
+            tmp.push(sensor);
+        }
 
-        this.setState({holderAddress:address,holderLocation:location,show:true});
+        this.setState({holderAddress:address,holderLocation:location,thisCycle:tCycle,lastCycle:lCycle,sensors:tmp,show:true});
 
     }
 
@@ -40,7 +45,6 @@ class Participant extends Component{
     componentWillUnmount() {
         clearInterval(this.interval);
     }
-
 
     generateRows(){
        return this.state.sensors.map(function(sensor,i){
@@ -62,8 +66,7 @@ class Participant extends Component{
                         <Card.Header><b> General Information</b></Card.Header>
                         <Card.Content>
                             <h5>Address: {this.state.holderAddress}
-                            <br/>Location: {this.state.holderLocation}
-                            <br/>Registered Cycle: {this.state.registeredCycle}</h5>
+                            <br/>Location: {this.state.holderLocation}</h5>
                         </Card.Content>
                     </Card>
                     <Card className={'fluid'} color="green">
@@ -104,7 +107,11 @@ class Participant extends Component{
                     <Card.Content>
                         <Form.Field>
                             <input id="holderInput" placeholder="Enter Address"/>
-                            <button className={'btn'} onClick={()=>{this.setHolderInformation(document.getElementById("holderInput").value)}}/>
+                            <div className={'float-right'}>
+                            <button className={'btn btn-primary'} style={{color:"white"}} onClick={()=>{this.setHolderInformation(document.getElementById("holderInput").value)}}>
+                                Find Info
+                            </button>
+                            </div>
                         </Form.Field>
                     </Card.Content>
                 </Card>
