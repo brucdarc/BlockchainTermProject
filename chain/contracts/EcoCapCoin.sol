@@ -25,6 +25,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         uint256 capacity;
         uint256 holding;
         uint256 original_cap;
+        uint256 id;
     }
 
     struct sensor{
@@ -38,6 +39,7 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
     mapping(address => sensor) sensors;
     address[] holders;
     uint256 cycle;
+    uint256 locIdSpace;
 
     /*
     mapping(address => string) locations;
@@ -89,6 +91,8 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         require(locations[loc].original_cap == 0, "Location Already Registered");
         locations[loc].capacity = capacity;
         locations[loc].original_cap = capacity;
+        locations[loc].id = locIdSpace;
+        locIdSpace++;
     }
 
     function nextCycle() public onlyOwner{
@@ -192,6 +196,11 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         location storage receiver_loc = locations[receiver.location];
         location storage sender_loc = locations[sender.location];
 
+        if(receiver_loc.id == sender_loc.id){
+            _transfer(msg.sender, to, value); //transfer the tokens
+            return true;
+        }
+
 
         require(receiver_loc.holding.add(value) <= receiver_loc.capacity, "Transaction would exceed location capacity"); //make sure cap is not exceeded and revert if it is
         receiver_loc.holding = receiver_loc.holding.add(value); //increase the location holding for receiver
@@ -208,6 +217,9 @@ contract EcoCapCoin is ERC20Burnable, Ownable{
         location storage receiver_loc = locations[receiver.location];
         location storage sender_loc = locations[sender.location];
 
+        if(receiver_loc.id == sender_loc.id){
+            return super.transferFrom(from, to, value); //transfer the tokens
+        }
 
         require(receiver_loc.holding.add(value) <= receiver_loc.capacity, "Transaction would exceed location capacity"); //make sure cap is not exceeded and revert if it is
         receiver_loc.holding = receiver_loc.holding.add(value); //increase the location holding for receiver
