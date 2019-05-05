@@ -17,6 +17,7 @@ class PublicPortal extends Component{
         this.genRegionCards=this.genRegionCards.bind(this);
         this.updateRegions=this.updateRegions.bind(this);
         this.regionsIndex=this.regionsIndex.bind(this);
+        this.updateRegions()
     }
 
     componentDidMount() {

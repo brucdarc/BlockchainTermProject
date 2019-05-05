@@ -14,23 +14,39 @@ class TokenHolderPortal extends Component{
     constructor(props){
         super(props);
         this.state={
-            showRegister: false
+            showRegister: false,
+            balance: 0
         };
-        this.handleCloseRegister=this.handleCloseRegister.bind(this);
-        this.handleOpenRegister=this.handleOpenRegister.bind(this);
-        this.progressCycle=this.progressCycle.bind(this);
+
+
+        this.getBalance= this.getBalance.bind(this);
+        this.getBalance()
     }
 
-    handleCloseRegister(){
-        this.setState({showRegister:false});
+
+
+
+
+    getBalance = async () =>{
+        console.log("EYYYYYY");
+        try {
+            const accounts = await web3.eth.getAccounts();
+            let bal = await EcoCapCoin.methods.balanceOf(String(accounts[0])).call();
+            this.setState({
+                balance: bal
+            });
+        } catch (err) {
+            console.log("ERROR IN SENDING TO CHAIN " + err);
+            this.setState({
+            });
+        }
     }
 
-    handleOpenRegister(){
-        this.setState({showRegister:true});
+    componentDidMount() {
+        this.interval = setInterval(() => this.getBalance(), 5000);
     }
-
-    progressCycle(){
-
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
 
@@ -53,6 +69,11 @@ class TokenHolderPortal extends Component{
                         </Card.Content>
                     </Card>
                 </Card.Group>
+
+                <h2>Your Balance : {this.state.balance} </h2>
+
+
+
             </div>
         )
     }

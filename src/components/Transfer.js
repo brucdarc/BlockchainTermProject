@@ -8,19 +8,19 @@ class Transfer extends Component{
     constructor(props){
         super(props);
         this.state={
-            location : "",
-            capacity: 0
+            recipient : "",
+            amount: 0
         };
 
     }
 
-    setLocCap = async event =>{
+    transfer = async event =>{
         console.log("EYYYYYY");
         event.preventDefault();
         try {
             const accounts = await web3.eth.getAccounts();
             await EcoCapCoin.methods
-                .registerLocation(this.state.location, this.state.capacity) // contains the user account name
+                .transfer(this.state.recipient, this.state.amount) // contains the user account name
                 .send({
                     from: accounts[0]
                 });
@@ -42,7 +42,7 @@ class Transfer extends Component{
                         placeholder="Recipient Address"
                         onChange={event =>
                             this.setState({
-                                location: event.target.value
+                                recipient: event.target.value
                             })
                         }
                     />
@@ -52,14 +52,14 @@ class Transfer extends Component{
                         placeholder="Number of Permits"
                         onChange={event =>
                             this.setState({
-                                capacity: event.target.value
+                                amount: event.target.value
                             })
                         }
                     />
                 </Form.Field>
                 <br/>
-                <button id={'setLocation'} className={'btn btn-md btn-success'} style={{color:'white'}} onClick={this.setLocCap}>
-                    <span>Transfer Permits</span>
+                <button id={'setLocation'} className={'btn btn-md btn-success'} style={{color:'white'}} onClick={this.transfer}>
+                    <span>Transfer Tokens</span>
                 </button>
             </div>
         )
