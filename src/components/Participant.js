@@ -10,28 +10,27 @@ class Participant extends Component{
         this.state={
             holderAddress:"",
             holderLocation:"",
-            thisCycle: 0,
-            lastCycle: 0,
-            holdings: 0,
-            registeredCycle: 0,
-            sensors:[{address:"addr1",type:"1"},{address:"addr2",type:"2"}],
+            thisCycle: 5600,
+            lastCycle: 1200,
+            holdings: 65000,
+            registeredCycle: 1,
+            sensors:["0xc14f6c868bb09d71409dd37bd775b3d95839fa93","0xb2f1229e80e2392013e25c7452bab7171dcbe4c3","0x21b7ba728a806f3405fc850b053e80ec033476e3"],
             show:false
         };
 
         this.setHolderInformation=this.setHolderInformation.bind(this);
         this.generateHolderInformation=this.generateHolderInformation.bind(this);
-        this.updateHolderAddress=this.updateHolderAddress.bind(this);
         this.generateRows=this.generateRows.bind(this);
     }
 
-    async setHolderInformation(){
-        this.setState({show:true});
+    async setHolderInformation(address){
 
-        let location = await EcoCapCoin.methods.getUserLocation(this.state.holderAddress).call();
-        let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(this.state.holderAddress).call();
+        let location = await EcoCapCoin.methods.getUserLocation(address).call();
+        let lCycle = await EcoCapCoin.methods.getUserPreviousCyclePollution(address).call();
+        let tCycle = await EcoCapCoin.methods.checkPolluterLimit(address).call();
 
 
-        this.setState({show:true,holderLocation:location,lastCycle:lCycle});
+        this.setState({holderAddress:address,holderLocation:location,show:true});
 
     }
 
@@ -42,21 +41,13 @@ class Participant extends Component{
         clearInterval(this.interval);
     }
 
-    updateHolderAddress(address){
-            this.setState({holderAddress: address});
-            this.setHolderInformation();
-    }
-
 
     generateRows(){
        return this.state.sensors.map(function(sensor,i){
             return(
             <tr key={i}>
                 <td>
-                    {sensor.address}
-                </td>
-                <td>
-                    {sensor.type}
+                    {sensor}
                 </td>
             </tr>
             );
@@ -92,9 +83,6 @@ class Participant extends Component{
                                         <th>
                                             Address
                                         </th>
-                                        <th>
-                                            Type
-                                        </th>
                                     </tr>
                                     {this.generateRows()}
                                 </tbody>
@@ -116,7 +104,7 @@ class Participant extends Component{
                     <Card.Content>
                         <Form.Field>
                             <input id="holderInput" placeholder="Enter Address"/>
-                            <button onClick={()=>{this.updateHolderAddress(document.getElementById("holderInput").value)}}/>
+                            <button className={'btn'} onClick={()=>{this.setHolderInformation(document.getElementById("holderInput").value)}}/>
                         </Form.Field>
                     </Card.Content>
                 </Card>
